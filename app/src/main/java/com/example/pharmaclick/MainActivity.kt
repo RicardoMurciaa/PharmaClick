@@ -1,5 +1,6 @@
 package com.example.pharmaclick
 
+import android.widget.Button
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -61,6 +62,24 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "Error al cargar los datos", Toast.LENGTH_SHORT).show()
             }
         })
+
+        // Botón para ver resumen de la orden
+        val btnVerResumen: Button = findViewById(R.id.btnVerResumen)
+
+        btnVerResumen.setOnClickListener {
+            // Obtener medicamentos seleccionados
+            val selectedMedicamentos = medicamentoAdapter.getSelectedMedicamentos()
+
+            // Verificar que haya medicamentos seleccionados
+            if (selectedMedicamentos.isEmpty()) {
+                Toast.makeText(this, "No has seleccionado ningún medicamento", Toast.LENGTH_SHORT).show()
+            } else {
+                // Enviar medicamentos seleccionados a la actividad de resumen
+                val intent = Intent(this, OrderSummaryActivity::class.java)
+                intent.putParcelableArrayListExtra("selectedMedicamentos", ArrayList(selectedMedicamentos))
+                startActivity(intent)
+            }
+        }
     }
 
     // Crea el menú de opciones
@@ -84,4 +103,3 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 }
-
